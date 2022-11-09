@@ -1,9 +1,0 @@
-C:\Users\Pedro\documents\visual studio 2010\Projects\ProyectoSO_VS_Cliente\ProyectoSO_VS_Cliente\bin\Debug\ProyectoSO_VS_Cliente.exe
-C:\Users\Pedro\documents\visual studio 2010\Projects\ProyectoSO_VS_Cliente\ProyectoSO_VS_Cliente\bin\Debug\ProyectoSO_VS_Cliente.pdb
-C:\Users\Pedro\documents\visual studio 2010\Projects\ProyectoSO_VS_Cliente\ProyectoSO_VS_Cliente\obj\x86\Debug\WindowsFormsApplication1.Form1.resources
-C:\Users\Pedro\documents\visual studio 2010\Projects\ProyectoSO_VS_Cliente\ProyectoSO_VS_Cliente\obj\x86\Debug\WindowsFormsApplication1.Properties.Resources.resources
-C:\Users\Pedro\documents\visual studio 2010\Projects\ProyectoSO_VS_Cliente\ProyectoSO_VS_Cliente\obj\x86\Debug\ProyectoSO_VS_Cliente.csproj.GenerateResource.Cache
-C:\Users\Pedro\documents\visual studio 2010\Projects\ProyectoSO_VS_Cliente\ProyectoSO_VS_Cliente\obj\x86\Debug\ProyectoSO_VS_Cliente.exe
-C:\Users\Pedro\documents\visual studio 2010\Projects\ProyectoSO_VS_Cliente\ProyectoSO_VS_Cliente\obj\x86\Debug\ProyectoSO_VS_Cliente.pdb
-C:\Users\Pedro\Documents\ProyectoSO\ProyectoSO\ProyectoSO_VS_Cliente\ProyectoSO_VS_Cliente\obj\x86\Debug\ProyectoSO_VS_Cliente.exe
-C:\Users\Pedro\Documents\ProyectoSO\ProyectoSO\ProyectoSO_VS_Cliente\ProyectoSO_VS_Cliente\obj\x86\Debug\ProyectoSO_VS_Cliente.pdb

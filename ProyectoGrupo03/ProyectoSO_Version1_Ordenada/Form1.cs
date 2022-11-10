@@ -29,16 +29,6 @@ namespace WindowsFormsApplication1
         }
         private void button2_Click(object sender, EventArgs e)
         {
-            string mensaje = "0/";
-
-            if (server!=null)
-            {
-                byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
-                server.Send(msg);
-
-                server.Shutdown(SocketShutdown.Both);
-                server.Close();
-            }
             this.Close();
         }
 

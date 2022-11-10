@@ -15,3 +15,12 @@ C:\Users\Víctor\Desktop\ProyectoSO_Version1_Ordenada\ProyectoSO_Version1_Ordena
 C:\Users\Víctor\Desktop\ProyectoSO_Version1_Ordenada\ProyectoSO_Version1_Ordenada\obj\x86\Debug\ProyectoSO_Version1_Ordenada.csproj.CoreCompileInputs.cache
 C:\Users\Víctor\Desktop\ProyectoSO_Version1_Ordenada\ProyectoSO_Version1_Ordenada\obj\x86\Debug\ProyectoSO_Version1_Ordenada.exe
 C:\Users\Víctor\Desktop\ProyectoSO_Version1_Ordenada\ProyectoSO_Version1_Ordenada\obj\x86\Debug\ProyectoSO_Version1_Ordenada.pdb
+C:\Users\Víctor\Desktop\UPC\SO\ProyectoGrup03\ProyectoGrupo03\ProyectoSO_Version1_Ordenada\bin\Debug\ProyectoSO_Version1_Ordenada.exe
+C:\Users\Víctor\Desktop\UPC\SO\ProyectoGrup03\ProyectoGrupo03\ProyectoSO_Version1_Ordenada\bin\Debug\ProyectoSO_Version1_Ordenada.pdb
+C:\Users\Víctor\Desktop\UPC\SO\ProyectoGrup03\ProyectoGrupo03\ProyectoSO_Version1_Ordenada\obj\x86\Debug\ProyectoSO_Version1_Ordenada.csprojAssemblyReference.cache
+C:\Users\Víctor\Desktop\UPC\SO\ProyectoGrup03\ProyectoGrupo03\ProyectoSO_Version1_Ordenada\obj\x86\Debug\WindowsFormsApplication1.Form1.resources
+C:\Users\Víctor\Desktop\UPC\SO\ProyectoGrup03\ProyectoGrupo03\ProyectoSO_Version1_Ordenada\obj\x86\Debug\WindowsFormsApplication1.Properties.Resources.resources
+C:\Users\Víctor\Desktop\UPC\SO\ProyectoGrup03\ProyectoGrupo03\ProyectoSO_Version1_Ordenada\obj\x86\Debug\ProyectoSO_Version1_Ordenada.csproj.GenerateResource.cache
+C:\Users\Víctor\Desktop\UPC\SO\ProyectoGrup03\ProyectoGrupo03\ProyectoSO_Version1_Ordenada\obj\x86\Debug\ProyectoSO_Version1_Ordenada.csproj.CoreCompileInputs.cache
+C:\Users\Víctor\Desktop\UPC\SO\ProyectoGrup03\ProyectoGrupo03\ProyectoSO_Version1_Ordenada\obj\x86\Debug\ProyectoSO_Version1_Ordenada.exe
+C:\Users\Víctor\Desktop\UPC\SO\ProyectoGrup03\ProyectoGrupo03\ProyectoSO_Version1_Ordenada\obj\x86\Debug\ProyectoSO_Version1_Ordenada.pdb

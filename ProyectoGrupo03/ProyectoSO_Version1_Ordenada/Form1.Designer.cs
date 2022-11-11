@@ -43,6 +43,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.Cancelar2 = new System.Windows.Forms.Button();
+            this.Conectados = new System.Windows.Forms.Button();
+            this.listConectados = new System.Windows.Forms.ListBox();
             this.SuspendLayout();
             // 
             // Aceptar
@@ -196,11 +198,32 @@
             this.Cancelar2.UseVisualStyleBackColor = true;
             this.Cancelar2.Click += new System.EventHandler(this.Cancelar2_Click);
             // 
+            // Conectados
+            // 
+            this.Conectados.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Conectados.Location = new System.Drawing.Point(518, 44);
+            this.Conectados.Name = "Conectados";
+            this.Conectados.Size = new System.Drawing.Size(109, 43);
+            this.Conectados.TabIndex = 15;
+            this.Conectados.Text = "Actualizar";
+            this.Conectados.UseVisualStyleBackColor = true;
+            this.Conectados.Click += new System.EventHandler(this.Conectados_Click);
+            // 
+            // listConectados
+            // 
+            this.listConectados.FormattingEnabled = true;
+            this.listConectados.Location = new System.Drawing.Point(518, 104);
+            this.listConectados.Name = "listConectados";
+            this.listConectados.Size = new System.Drawing.Size(120, 95);
+            this.listConectados.TabIndex = 16;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(468, 390);
+            this.ClientSize = new System.Drawing.Size(936, 390);
+            this.Controls.Add(this.listConectados);
+            this.Controls.Add(this.Conectados);
             this.Controls.Add(this.Cancelar2);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
@@ -240,6 +263,8 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button Cancelar2;
+        private System.Windows.Forms.Button Conectados;
+        private System.Windows.Forms.ListBox listConectados;
     }
 }
 

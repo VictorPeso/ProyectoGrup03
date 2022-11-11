@@ -10,10 +10,10 @@ CREATE TABLE Partidas( id INTEGER  NOT NULL, Numero_de_jugadores INTEGER NOT NUL
 
 CREATE TABLE Registro_de_partidas( idU INTEGER NOT NULL, idP INTEGER NOT NULL, Resultado_Final VARCHAR(20) NOT NULL )ENGINE=InnoDB;
 
-INSERT INTO Usuarios (id ,Nombre, Contra, Estado) VALUES (087965,'Victor','ola','Online');
+INSERT INTO Usuarios (id ,Nombre, Contra, Estado) VALUES (087965,'Victor','ola','Offline');
 INSERT INTO Usuarios (id ,Nombre, Contra, Estado) VALUES (093983,'Aza','Boa_H.','Offline');
 INSERT INTO Usuarios (id ,Nombre, Contra, Estado) VALUES (084319,'Pedro','ole','Offline');
-INSERT INTO Usuarios (id ,Nombre, Contra, Estado) VALUES (834298,'Ozuna','Corazondeseda','Online');
+INSERT INTO Usuarios (id ,Nombre, Contra, Estado) VALUES (834298,'Ozuna','Corazondeseda','Offline');
 
 INSERT INTO Partidas (id , Numero_de_jugadores, Duracion) VALUES (1, 2, 100);
 INSERT INTO Partidas (id , Numero_de_jugadores, Duracion) VALUES (2, 3, 120);

@@ -14,11 +14,14 @@ namespace WindowsFormsApplication1
     public partial class Form1 : Form
     {
         Socket server;
+        public string nombre;
         public Form1()
         {
             InitializeComponent();
             Aceptar2.Visible = false;
             Cancelar2.Visible = false;
+            listConectados.Visible = false;
+            Conectados.Visible = false;
             label3.Visible = false;
             label4.Visible = false;
             PartidaBox.Visible = false;
@@ -42,7 +45,7 @@ namespace WindowsFormsApplication1
             //Creamos un IPEndPoint con el ip del servidor y puerto del servidor 
             //al que deseamos conectarnos
             IPAddress direc = IPAddress.Parse("192.168.56.102");
-            IPEndPoint ipep = new IPEndPoint(direc, 9060);
+            IPEndPoint ipep = new IPEndPoint(direc, 9400);
 
             //Creamos el socket 
             server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -64,12 +67,15 @@ namespace WindowsFormsApplication1
             byte[] msg2 = new byte[80];
             server.Receive(msg2);
             mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
-
-            if (mensaje == "Correcto")
+            string[] mensajes = mensaje.Split('/');
+            if (mensajes[0] == "Correcto")
             {
                 MessageBox.Show("Conectado.");
+                nombre = textUsuario.Text;
                 Aceptar2.Visible = true;
                 Cancelar2.Visible = true;
+                listConectados.Visible = true;
+                Conectados.Visible = true;
                 label3.Visible = true;
                 label4.Visible = true;
                 PartidaBox.Visible = true;
@@ -94,6 +100,11 @@ namespace WindowsFormsApplication1
                 server.Shutdown(SocketShutdown.Both);
                 server.Close();
                 MessageBox.Show("Contraseña o usuario incorrecto, intentelo de nuevo.");
+            }
+            listConectados.Items.Clear();
+            for (int i=1; i<(mensajes.Length); i++)
+            {
+                listConectados.Items.Add(mensajes[i]);
             }
         }
 
@@ -164,8 +175,7 @@ namespace WindowsFormsApplication1
 
         private void Cancelar2_Click(object sender, EventArgs e)
         {
-            string mensaje = "0/";
-
+            string mensaje = "0/"+nombre;
             if (server != null)
             {
                 byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
@@ -176,6 +186,8 @@ namespace WindowsFormsApplication1
             }
             Aceptar2.Visible = false;
             Cancelar2.Visible = false;
+            listConectados.Visible = false;
+            Conectados.Visible = false;
             label3.Visible = false;
             label4.Visible = false;
             PartidaBox.Visible = false;
@@ -189,6 +201,24 @@ namespace WindowsFormsApplication1
             label2.Visible = true;
             textUsuario.Visible = true;
             Contraseña.Visible = true;
+        }
+
+        private void Conectados_Click(object sender, EventArgs e)
+        {
+            listConectados.Items.Clear();
+            string mensaje = "5/";
+            byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
+            server.Send(msg);
+
+            //Recibimos la respuesta del servidor
+            byte[] msg2 = new byte[80];
+            server.Receive(msg2);
+            mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
+            string[] mensajes = mensaje.Split('/');
+            for (int i = 0; i < (mensajes.Length); i++)
+            {
+                listConectados.Items.Add(mensajes[i]);
+            }
         }
     }
 }

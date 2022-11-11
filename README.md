@@ -11,4 +11,5 @@ Versión 2:
  - Generada por Azahara
  - Verificada por Víctor
  - Comunicada por Pedro
-URL: https://drive.google.com/file/d/1ge1Hs7-94o4GWeEfFKTEga70OZ7R5PnL/view?usp=share_link
+URL: https://drive.google.com/file/d/1qBi7riN0vss13u3NTsbHBCHPGSLBlBcI/view?usp=share_link
+URL Interfaz Gráfica 1: https://drive.google.com/file/d/15cyRwFyqOEGB4LV27GJbPOMml7oMYDUc/view?usp=share_link

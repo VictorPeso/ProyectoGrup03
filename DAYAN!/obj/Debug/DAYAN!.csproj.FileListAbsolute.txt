@@ -1,0 +1,11 @@
+C:\Users\Víctor\Desktop\DAYAN!\DAYAN!\bin\Debug\DAYAN!.exe.config
+C:\Users\Víctor\Desktop\DAYAN!\DAYAN!\bin\Debug\DAYAN!.exe
+C:\Users\Víctor\Desktop\DAYAN!\DAYAN!\bin\Debug\DAYAN!.pdb
+C:\Users\Víctor\Desktop\DAYAN!\DAYAN!\obj\Debug\DAYAN!.csprojAssemblyReference.cache
+C:\Users\Víctor\Desktop\DAYAN!\DAYAN!\obj\Debug\DAYAN_.Properties.Resources.resources
+C:\Users\Víctor\Desktop\DAYAN!\DAYAN!\obj\Debug\DAYAN_.Registrarse.resources
+C:\Users\Víctor\Desktop\DAYAN!\DAYAN!\obj\Debug\DAYAN!.csproj.GenerateResource.cache
+C:\Users\Víctor\Desktop\DAYAN!\DAYAN!\obj\Debug\DAYAN!.csproj.CoreCompileInputs.cache
+C:\Users\Víctor\Desktop\DAYAN!\DAYAN!\obj\Debug\DAYAN!.exe
+C:\Users\Víctor\Desktop\DAYAN!\DAYAN!\obj\Debug\DAYAN!.pdb
+C:\Users\Víctor\Desktop\DAYAN!\DAYAN!\obj\Debug\DAYAN_.Consulta.resources

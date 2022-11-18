@@ -10,8 +10,64 @@
 #include <pthread.h>
 //#include <my_global.h> 
 
+// Clases --------------------------------
+typedef struct {
+	char nombre[20];
+} Usuario;
+
+typedef struct {
+	Usuario usuarios[50];
+	int num;
+} ListaUsuarios;
+
+
+// Variables Globals ---------------------
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+ListaUsuarios listaU;
+int i;
+int sockets[100];
+
+
+// FUNCIONS ------------------------------
+void EscribirLista(ListaUsuarios *LU,char res[100])
+{
+	for (int j=0;j<LU->num;j++)
+	{
+		sprintf(res,"%s%s/", res,LU->usuarios[j].nombre);
+	}
+	res[strlen(res)-1]=' ';
+	printf("Vector conectados: %s\n",res);
+}
+
+void AddElemento(ListaUsuarios *LU, char nom[20])
+{
+	Usuario u;
+	strcpy(u.nombre,nom);
+	LU->usuarios[LU->num] = u;
+	LU->num =LU->num+1;
+	printf("Elemento a�adido: %s, num: %d\n", LU->usuarios[LU->num-1].nombre, LU->num);
+}
+
+void EliminarElemento(ListaUsuarios *LU, char nom[20])
+{
+	ListaUsuarios probL;
+	probL.num=0;
+	for (int j=0; j<LU->num; j++)
+	{
+		if (strcmp(LU->usuarios[j].nombre,nom) != 0)
+		{
+			AddElemento(&probL,LU->usuarios[j].nombre);
+		}
+	}
+	for (int j=0; j<LU->num;j++)
+	{
+		strcpy(LU->usuarios[j].nombre,probL.usuarios[j].nombre);
+	}
+	LU->num = LU->num-1;
+}
+
 void *AtenderCliente (void *socket)
+// Abre connexión con MySQL y devuelve la Respuesta de la consulta
 {
 	int sock_conn;
 	int *s;
@@ -27,15 +83,13 @@ void *AtenderCliente (void *socket)
 	int err;
 	MYSQL_RES *resultado;
 	MYSQL_ROW row;
-	MYSQL_RES *resultado2;
-	MYSQL_ROW row2;
 	conn = mysql_init(NULL);
 	if (conn==NULL) {
 		printf ("Error al crear la conexion: %u %s\n", 
 				mysql_errno(conn), mysql_error(conn));
 		exit (1);
 	}
-	conn = mysql_real_connect (conn, "localhost","root", "mysql", "BaseJuego", 0, NULL, 0);
+	conn = mysql_real_connect (conn, "localhost","root", "mysql", "T3_BaseJuego", 0, NULL, 0);
 	if (conn==NULL) {
 		printf ("Error al inicializar laconexion: %u %s\n", 
 				mysql_errno(conn), mysql_error(conn));
@@ -71,26 +125,17 @@ void *AtenderCliente (void *socket)
 		
 		if (codigo == 0) //petici?n de desconexi?n			
 		{
-			pthread_mutex_lock(&mutex);
 			p = strtok( NULL, "/");
 			strcpy (nombre, p);
+			pthread_mutex_lock(&mutex);
+
+			EliminarElemento(&listaU,nombre);
 			
-			char consulta [150];
-		
-			strcpy (consulta,"UPDATE Usuarios SET Estado = 'Offline' WHERE Usuarios.Nombre = '");
-			strcat (consulta, nombre);
-			strcat (consulta,"'");
-		
-			err=mysql_query (conn, consulta);
-			
-			if (err!=0) {
-				printf ("Error al consultar datos de la base %u %s\n",
-						mysql_errno(conn), mysql_error(conn));
-				exit (1);
-			}
-			
-			terminar = 1;
 			pthread_mutex_unlock(&mutex);
+			char prob[100];
+			prob[0]='\0';
+			EscribirLista(&listaU,prob);
+			terminar = 1;
 		}	
 		else if (codigo == 1) //mirar si el usuario y contraseña son correctos
 		{	
@@ -100,9 +145,6 @@ void *AtenderCliente (void *socket)
 			
 			p = strtok( NULL, "/");
 			strcpy (contra, p);
-			//*
-			//codigo de pruebas
-			printf ("Codigo: %d, Nombre: %s\n", codigo, nombre);
 			
 			char consulta [150];
 			
@@ -122,55 +164,24 @@ void *AtenderCliente (void *socket)
 			
 			row = mysql_fetch_row(resultado);
 			
-			pthread_mutex_lock(&mutex);
 			
 			if (row == NULL)
 				printf ("No se han obtenido datos en la consulta\n");
 			else
 			{
-				printf ("ROW: %s\n", row[0]);
 				if (strcmp(row[0],contra)==0)
 				{
 					strcpy(respuesta, "Correcto");
-					char consulta2 [150];
-					
-					strcpy (consulta2,"UPDATE Usuarios SET Estado = 'Online' WHERE Usuarios.Nombre = '");
-					strcat (consulta2, nombre);
-					strcat (consulta2,"'");
-					
-					err=mysql_query (conn, consulta2);
-					
-					if (err!=0) {
-						printf ("Error al consultar datos de la base %u %s\n",
-								mysql_errno(conn), mysql_error(conn));
-						exit (1);
-					}										
+					pthread_mutex_lock(&mutex);
+					AddElemento(&listaU,nombre);
+					char frase[100];
+					EscribirLista(&listaU,frase);
+					pthread_mutex_unlock(&mutex);
 				}
 				else
-					strcpy(respuesta, "Incorrecto");
-				pthread_mutex_unlock(&mutex);
-				
-				char consulta3 [150];
-				
-				strcpy (consulta3,"SELECT Usuarios.Nombre FROM (Usuarios) WHERE Usuarios.Estado = 'Online'");
-				
-				err=mysql_query (conn, consulta3);
-				
-				if (err!=0) {
-					printf ("Error al consultar datos de la base %u %s\n",
-							mysql_errno(conn), mysql_error(conn));
-					exit (1);
-				}
-				
-				resultado2 = mysql_store_result (conn);
-				
-				row2 = mysql_fetch_row(resultado2);
-				
-				while (row2!=NULL)
 				{
-					sprintf(respuesta,"%s/%s",respuesta,row2[0]);
-					row2 = mysql_fetch_row(resultado2);
-				}
+					strcpy(respuesta, "Incorrecto");
+				}			
 			}
 		}
 		else if (codigo ==2)
@@ -205,9 +216,9 @@ void *AtenderCliente (void *socket)
 				row = mysql_fetch_row (resultado);
 			}
 			if (result == 1)
-				sprintf (respuesta, "SI");
+				sprintf (respuesta, "2/SI");
 			else
-				sprintf (respuesta, "NO");
+				sprintf (respuesta, "2/NO");
 			
 		}
 		else if (codigo ==3)
@@ -228,10 +239,17 @@ void *AtenderCliente (void *socket)
 			}
 			resultado = mysql_store_result (conn);
 			row = mysql_fetch_row (resultado);
-			if (row[0]>10)
-				sprintf (respuesta, "SI");
-			else 
-				sprintf (respuesta, "NO");
+			if (row == NULL)
+			{
+				sprintf (respuesta, "3/NF");
+			}
+			else
+			{
+				if (row[0]>10)
+					sprintf (respuesta, "3/SI");
+				else 
+					sprintf (respuesta, "3/NO");
+			}
 		}
 		
 		else if (codigo ==4)
@@ -239,8 +257,11 @@ void *AtenderCliente (void *socket)
 			p = strtok( NULL, "/");
 			strcpy (jugador, p);
 			
+			p = strtok( NULL, "/");
+			partida = atoi (p);
+			
 			char consulta [150];
-			strcpy (consulta,"SELECT Usuarios.Estado FROM Usuarios WHERE Usuarios.Nombre= '");
+			strcpy (consulta,"SELECT Registro_de_partidas.idP,Registro_de_partidas.Resultado_Final FROM Registro_de_partidas,Usuarios WHERE Registro_de_partidas.idU=Usuarios.id AND Usuarios.nombre='");
 			strcat (consulta, jugador);
 			strcat (consulta,"'");
 			
@@ -250,39 +271,38 @@ void *AtenderCliente (void *socket)
 				printf ("Error al consultar datos de la base %u %s\n",mysql_errno(conn), mysql_error(conn));
 				exit (1);
 			}
+			
 			resultado = mysql_store_result (conn);
 			row = mysql_fetch_row (resultado);
-			if (strcmp( row[0], "Online") == 0)
-				sprintf (respuesta, "SI");
-			else 
-				sprintf (respuesta, "NO");
-		}	
-		else
-		{
-			char consulta [150];
-			
-			strcpy (consulta,"SELECT Usuarios.Nombre FROM (Usuarios) WHERE Usuarios.Estado = 'Online'");
-			
-			err=mysql_query (conn, consulta);
-			
-			if (err!=0) {
-				printf ("Error al consultar datos de la base %u %s\n",
-						mysql_errno(conn), mysql_error(conn));
-				exit (1);
-			}
-			
-			resultado = mysql_store_result (conn);
-			
-			row = mysql_fetch_row(resultado);
-			
-			sprintf(respuesta,row[0]);
-			
-			row = mysql_fetch_row(resultado);
-			
-			while (row!=NULL)
+			int fnd = 0;
+			int winner =0;
+			while (row !=NULL)
 			{
-				sprintf(respuesta,"%s/%s",respuesta,row[0]);
-				row = mysql_fetch_row(resultado);
+				int pa = atoi(row[0]);
+				if (pa == partida)
+				{
+					if (strcmp(row[1],"Ganador") == 0)
+					{
+						winner = 1;
+					}
+					fnd = 1;
+				}
+				row = mysql_fetch_row (resultado);
+			}
+			if (fnd == 0)
+			{
+				sprintf (respuesta, "4/NF");
+			}
+			else
+			{
+				if (winner == 1)
+				{
+					sprintf (respuesta, "4/SI");
+				}
+				else
+				{
+					sprintf (respuesta, "4/NO");
+				}
 			}
 		}
 		if (codigo !=0)
@@ -292,11 +312,27 @@ void *AtenderCliente (void *socket)
 			// Enviamos respuesta
 			write (sock_conn,respuesta, strlen(respuesta));
 		}
+		if ((codigo == 1)||(codigo == 0))
+		{
+			pthread_mutex_lock(&mutex);
+			char frase[100];
+			frase[0] = '\0';
+			EscribirLista(&listaU,frase);
+			char notificacion[20];
+			sprintf (notificacion, "5/%s", frase);
+			pthread_mutex_unlock(&mutex);
+			int j;
+			for (j=0; j<i; j++)
+			{
+				write (sockets[j],notificacion, strlen(notificacion));
+			}
+		}
 	}
 	// Se acabo el servicio para este cliente
 	close(sock_conn);
 }
 
+// MAIN ----------------------------------
 int main(int argc, char *argv[])
 {
 	int sock_conn, sock_listen;
@@ -316,17 +352,16 @@ int main(int argc, char *argv[])
 	//htonl formatea el numero que recibe al formato necesario
 	serv_adr.sin_addr.s_addr = htonl(INADDR_ANY);
 	// establecemos el puerto de escucha
-	serv_adr.sin_port = htons(9400);
+	serv_adr.sin_port = htons(9300);
 	if (bind(sock_listen, (struct sockaddr *) &serv_adr, sizeof(serv_adr)) < 0)
 		printf ("Error al bind\n");
 	
 	if (listen(sock_listen, 4) < 0)
 		printf("Error en el Listen\n");
 	
-	int i;
-	int sockets[100];
 	pthread_t thread;
 	i=0;
+	listaU.num = 0;
 	// Bucle infinito
 	for (;;){
 		printf ("Escuchando\n");
@@ -341,3 +376,5 @@ int main(int argc, char *argv[])
 		i=i+1;
 	}
 }
+
+

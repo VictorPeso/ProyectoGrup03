@@ -8,11 +8,12 @@
 #include <netinet/in.h>
 #include <stdio.h>
 #include <pthread.h>
-//#include <my_global.h> 
+#include <my_global.h> 
 
 // Clases --------------------------------
 typedef struct {
 	char nombre[20];
+	int socket;
 } Usuario;
 
 typedef struct {
@@ -20,13 +21,24 @@ typedef struct {
 	int num;
 } ListaUsuarios;
 
+typedef struct {
+	int socket[4];
+	int jugadores;
+} Partidas;
+
+typedef struct {
+	Partidas Partida[50];
+	int num;
+} ListaPartidas;
+
 
 // Variables Globals ---------------------
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 ListaUsuarios listaU;
+ListaPartidas listaP;
 int i;
 int sockets[100];
-
+Partidas partidas [100];
 
 // FUNCIONS ------------------------------
 void EscribirLista(ListaUsuarios *LU,char res[100])
@@ -39,29 +51,45 @@ void EscribirLista(ListaUsuarios *LU,char res[100])
 	printf("Vector conectados: %s\n",res);
 }
 
-void AddElemento(ListaUsuarios *LU, char nom[20])
+void AddElemento(ListaUsuarios *LU, char nom[20], int socket)
 {
 	Usuario u;
 	strcpy(u.nombre,nom);
+	u.socket=socket;
 	LU->usuarios[LU->num] = u;
 	LU->num =LU->num+1;
-	printf("Elemento añadido: %s, num: %d\n", LU->usuarios[LU->num-1].nombre, LU->num);
+	printf("Elemento añadido: %s, num: %d,sock: %d\n", LU->usuarios[LU->num-1].nombre, LU->num, LU->usuarios[LU->num-1].socket);
+}
+
+int AddElementoLista(ListaPartidas *LP, int sockethost, int socket)
+{
+	int partida;
+	for (int j=0;j<LP->num;j++)
+	{
+		if (LP->Partida[j].socket[0]=sockethost)
+		{
+			LP->Partida[j].socket[LP->Partida[j].jugadores]=socket;
+			LP->Partida[j].jugadores=LP->Partida[j].jugadores+1;
+			partida=j;
+		}
+	}
+	return partida;
+	printf("partida: %d\n", partida);
 }
 
 void EliminarElemento(ListaUsuarios *LU, char nom[20])
 {
-	ListaUsuarios probL;
-	probL.num=0;
+	int found = 0;
 	for (int j=0; j<LU->num; j++)
 	{
-		if (strcmp(LU->usuarios[j].nombre,nom) != 0)
+		if (strcmp(LU->usuarios[j].nombre,nom) == 0)
 		{
-			AddElemento(&probL,LU->usuarios[j].nombre);
+			found = 1;			
 		}
-	}
-	for (int j=0; j<LU->num;j++)
-	{
-		strcpy(LU->usuarios[j].nombre,probL.usuarios[j].nombre);
+		if (found = 1)
+		{
+			LU->usuarios[j] = LU->usuarios[j+1];
+		}
 	}
 	LU->num = LU->num-1;
 }
@@ -73,6 +101,8 @@ void *AtenderCliente (void *socket)
 	int *s;
 	s= (int *) socket;
 	sock_conn= *s;
+	int socketdestino;
+	int PartidasJ[100];
 	//int socket_conn = * (int *) socket;
 	
 	char peticion[512];
@@ -89,7 +119,7 @@ void *AtenderCliente (void *socket)
 				mysql_errno(conn), mysql_error(conn));
 		exit (1);
 	}
-	conn = mysql_real_connect (conn, "localhost","root", "mysql", "T3_BaseJuego", 0, NULL, 0);
+	conn = mysql_real_connect (conn, "shiva2.upc.es","root", "mysql", "T3_BaseJuego", 0, NULL, 0);
 	if (conn==NULL) {
 		printf ("Error al inicializar laconexion: %u %s\n", 
 				mysql_errno(conn), mysql_error(conn));
@@ -119,6 +149,7 @@ void *AtenderCliente (void *socket)
 		int codigo =  atoi (p);
 		// Ya tenemos el c?digo de la petici?n
 		char nombre[20];
+		char nombredestino[20];
 		char contra[20];
 		char jugador[20];
 		int partida;
@@ -173,7 +204,7 @@ void *AtenderCliente (void *socket)
 				{
 					strcpy(respuesta, "Correcto");
 					pthread_mutex_lock(&mutex);
-					AddElemento(&listaU,nombre);
+					AddElemento(&listaU,nombre,sock_conn);
 					char frase[100];
 					EscribirLista(&listaU,frase);
 					pthread_mutex_unlock(&mutex);
@@ -305,12 +336,64 @@ void *AtenderCliente (void *socket)
 				}
 			}
 		}
-		if (codigo !=0)
+		else if (codigo==5)
 		{
+			p = strtok( NULL, "/");
+			strcpy (nombredestino, p);
 			
+			listaP.Partida[listaP.num].socket[0]=sock_conn;
+			listaP.Partida[listaP.num].jugadores=1;
+			PartidasJ[sizeof(PartidasJ)]=listaP.num;
+			listaP.num=listaP.num+1;
+			
+			sprintf (respuesta, "6/%s",nombre);
+			
+			for (int j=0; j<listaU.num; j++)
+			{
+				if (strcmp(listaU.usuarios[j].nombre,nombredestino) == 0)
+				{
+					socketdestino=listaU.usuarios[j].socket;
+				}
+			}
+		}
+		else if (codigo==6)
+		{
+			p = strtok( NULL, "/");
+			strcpy (nombredestino, p);
+			
+			for (int j=0; j<listaU.num; j++)
+			{
+				if (strcmp(listaU.usuarios[j].nombre,nombredestino) == 0)
+				{
+					socketdestino=listaU.usuarios[j].socket;
+				}
+			}
+			char resp[20];
+			p = strtok( NULL, "/");
+			strcpy (resp, p);
+			if (strcmp(resp,"Yes")==0)
+			{
+				PartidasJ[sizeof(PartidasJ)]=AddElementoLista(&listaP,socketdestino,sock_conn);
+				sprintf (respuesta, "7/%s/SI",nombre);
+			}
+			else
+			{
+				sprintf (respuesta, "7/%s/NO",nombre);
+			}
+		}
+		if ((codigo !=0)&&(codigo != 5)&&(codigo != 6))
+		{
+			printf ("%s",nombre);
 			printf ("Respuesta: %s\n", respuesta);
 			// Enviamos respuesta
 			write (sock_conn,respuesta, strlen(respuesta));
+		}
+		if ((codigo ==5)||(codigo == 6))
+		{
+			printf ("%s",nombre);
+			printf ("Respuesta: %s\n", respuesta);
+			// Enviamos respuesta
+			write (socketdestino,respuesta, strlen(respuesta));
 		}
 		if ((codigo == 1)||(codigo == 0))
 		{
@@ -336,6 +419,7 @@ void *AtenderCliente (void *socket)
 int main(int argc, char *argv[])
 {
 	int sock_conn, sock_listen;
+	int puerto = 50056;
 	struct sockaddr_in serv_adr;
 	
 	// INICIALITZACIONS
@@ -352,7 +436,7 @@ int main(int argc, char *argv[])
 	//htonl formatea el numero que recibe al formato necesario
 	serv_adr.sin_addr.s_addr = htonl(INADDR_ANY);
 	// establecemos el puerto de escucha
-	serv_adr.sin_port = htons(9300);
+	serv_adr.sin_port = htons(puerto);
 	if (bind(sock_listen, (struct sockaddr *) &serv_adr, sizeof(serv_adr)) < 0)
 		printf ("Error al bind\n");
 	

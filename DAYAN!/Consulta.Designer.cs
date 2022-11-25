@@ -40,6 +40,8 @@ namespace DAYAN_
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.InvitarPartida = new System.Windows.Forms.Button();
+            this.Usuariolb = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.listaUsuarios)).BeginInit();
             this.SuspendLayout();
             // 
@@ -103,6 +105,7 @@ namespace DAYAN_
             this.listaUsuarios.Name = "listaUsuarios";
             this.listaUsuarios.Size = new System.Drawing.Size(189, 267);
             this.listaUsuarios.TabIndex = 6;
+            this.listaUsuarios.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.listaUsuarios_CellClick);
             // 
             // JugadorTBx
             // 
@@ -148,11 +151,33 @@ namespace DAYAN_
             this.label3.TabIndex = 11;
             this.label3.Text = "Partida";
             // 
+            // InvitarPartida
+            // 
+            this.InvitarPartida.Location = new System.Drawing.Point(299, 254);
+            this.InvitarPartida.Name = "InvitarPartida";
+            this.InvitarPartida.Size = new System.Drawing.Size(115, 48);
+            this.InvitarPartida.TabIndex = 12;
+            this.InvitarPartida.Text = "Invitar a partida";
+            this.InvitarPartida.UseVisualStyleBackColor = true;
+            this.InvitarPartida.Click += new System.EventHandler(this.InvitarPartida_Click);
+            // 
+            // Usuariolb
+            // 
+            this.Usuariolb.AutoSize = true;
+            this.Usuariolb.Font = new System.Drawing.Font("Mongolian Baiti", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Usuariolb.Location = new System.Drawing.Point(22, 9);
+            this.Usuariolb.Name = "Usuariolb";
+            this.Usuariolb.Size = new System.Drawing.Size(47, 14);
+            this.Usuariolb.TabIndex = 13;
+            this.Usuariolb.Text = "label4";
+            // 
             // Consulta
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(656, 340);
+            this.Controls.Add(this.Usuariolb);
+            this.Controls.Add(this.InvitarPartida);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -186,5 +211,7 @@ namespace DAYAN_
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button InvitarPartida;
+        private System.Windows.Forms.Label Usuariolb;
     }
 }

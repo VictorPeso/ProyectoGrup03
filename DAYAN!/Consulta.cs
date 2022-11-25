@@ -18,6 +18,7 @@ namespace DAYAN_
         Socket server;
         Thread atender;
         string Usuario;
+        string nombredestino;
 
         public Consulta()
         {
@@ -28,6 +29,7 @@ namespace DAYAN_
             listaUsuarios.ColumnHeadersVisible = false;
             listaUsuarios.RowHeadersVisible = false;
             listaUsuarios.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            listaUsuarios.ReadOnly = true;
             //listaUsuarios.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
         }
 
@@ -48,35 +50,32 @@ namespace DAYAN_
                 //Recibimos mensaje del servidor
                 byte[] msg2 = new byte[80];
                 server.Receive(msg2);
-                string[] trozos = Encoding.ASCII.GetString(msg2).Split('/');
-                int codigo = Convert.ToInt32(trozos[0]);
-                string mensaje;
+                string trozo = Encoding.ASCII.GetString(msg2).Split('\0')[0];
+                string[] mensaje = trozo.Split('/');
+                int codigo = Convert.ToInt32(mensaje[0]);
 
                 switch (codigo)
                 {
                     case 2:
-                        mensaje = trozos[1].Split('\0')[0];
-                        if (mensaje == "SI")
+                        if (mensaje[1] == "SI")
                             MessageBox.Show(JugadorTBx.Text + " ha jugado la partida");
                         else
                             MessageBox.Show(JugadorTBx.Text + " no ha jugado la partida");
                         break;
 
                     case 3:
-                        mensaje = trozos[1].Split('\0')[0];
-                        if (mensaje == "NF")
+                        if (mensaje[1] == "NF")
                             MessageBox.Show("La partida " + PartidaTBx.Text + " no existe.");
-                        else if (mensaje == "SI")
+                        else if (mensaje[1] == "SI")
                             MessageBox.Show("La partida " + PartidaTBx.Text + " dura más de 10 minutos.");
                         else
                             MessageBox.Show("La partida " + PartidaTBx.Text + " no dura más de 10 minutos.");
                         break;
 
                     case 4:
-                        mensaje = trozos[1].Split('\0')[0];
-                        if (mensaje == "NF")
+                        if (mensaje[1] == "NF")
                             MessageBox.Show(JugadorTBx.Text + " no jugó esta partida.");
-                        else if (mensaje == "SI")
+                        else if (mensaje[1] == "SI")
                             MessageBox.Show(JugadorTBx.Text + " ganó esta partida.");
                         else
                             MessageBox.Show(JugadorTBx.Text + " no ganó esta partida.");
@@ -84,13 +83,34 @@ namespace DAYAN_
 
                     case 5:
                         listaUsuarios.ColumnCount = 1;
-                        listaUsuarios.RowCount = trozos.Length -1;
+                        listaUsuarios.RowCount = mensaje.Length -1;
                         int i = 1;
-                        while (i < trozos.Length)
+                        while (i < mensaje.Length)
                         {
-                            string u = trozos[i];
+                            string u = mensaje[i];
                             listaUsuarios[0, i - 1].Value = u;
                             i++;
+                        }
+                        break;
+                    case 6:
+                        DialogResult r = MessageBox.Show(mensaje[1] + " quiere que te unas a su partida", "Notificacion", MessageBoxButtons.YesNo);
+                        //MessageBox.Show(Convert.ToString(r));
+
+                        string respuesta = "6/" + mensaje[1] + "/" + Convert.ToString(r);
+                        // Enviamos al servidor el nombre tecleado
+                        byte[] msg = System.Text.Encoding.ASCII.GetBytes(respuesta);
+                        server.Send(msg);
+
+                        break;
+                    case 7:
+                        string nom = mensaje[1];
+                        if (mensaje[2] == "SI")
+                        {
+                            MessageBox.Show(nom + " acepta jugar contigo");
+                        }
+                        else
+                        {
+                            MessageBox.Show(nom + " no acepta jugar contigo");
                         }
                         break;
                 }
@@ -149,6 +169,22 @@ namespace DAYAN_
             ThreadStart ts = delegate { AtenderServidor(); };
             atender = new Thread(ts);
             atender.Start();
+            Usuariolb.Text = "Usuario: " + Usuario;
+        }
+
+        private void InvitarPartida_Click(object sender, EventArgs e)
+        {
+            string mensaje = "5/" + nombredestino;
+            // Enviamos al servidor el nombre tecleado
+            byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
+            server.Send(msg);
+
+            //MessageBox.Show(nombredestino);
+        }
+
+        private void listaUsuarios_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            nombredestino = listaUsuarios.Rows[e.RowIndex].Cells[0].Value.ToString();
         }
     }
 }

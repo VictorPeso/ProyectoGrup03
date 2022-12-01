@@ -132,6 +132,9 @@ namespace DAYAN_
             }
         }
 
-        
+        private void Registrarse_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

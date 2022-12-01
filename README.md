@@ -25,3 +25,10 @@ Versión 4:
  - Verificada por Azahara
  - Comunicada por Víctor
 URL: https://drive.google.com/file/d/1ObPUTqNz-f5OynwPVxvU2KzYICM8n8Z6/view?usp=share_link
+
+Versión 5:
+ - Generada por Azahara
+ - Verificada por Víctor
+ - Comunicada por Pedro
+URL: https://drive.google.com/file/d/10TIB002RLQHSFI3F9IOyaywLTU4D6tYJ/view?usp=share_link
+URL Interfaz Gráfica 2: https://drive.google.com/file/d/1QYmc5j5rkhF8RBAhv-poeFOuTd02l_3h/view?usp=share_link

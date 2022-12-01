@@ -53,6 +53,7 @@ void EscribirLista(ListaUsuarios *LU,char res[100])
 
 void AddElemento(ListaUsuarios *LU, char nom[20], int socket)
 {
+	printf("Añado el elemento: %d \n",LU->num);
 	Usuario u;
 	strcpy(u.nombre,nom);
 	u.socket=socket;
@@ -86,7 +87,7 @@ void EliminarElemento(ListaUsuarios *LU, char nom[20])
 		{
 			found = 1;			
 		}
-		if (found = 1)
+		if (found == 1)
 		{
 			LU->usuarios[j] = LU->usuarios[j+1];
 		}
@@ -203,16 +204,16 @@ void *AtenderCliente (void *socket)
 				if (strcmp(row[0],contra)==0)
 				{
 					strcpy(respuesta, "Correcto");
-					pthread_mutex_lock(&mutex);
-					AddElemento(&listaU,nombre,sock_conn);
-					char frase[100];
-					EscribirLista(&listaU,frase);
-					pthread_mutex_unlock(&mutex);
 				}
 				else
 				{
 					strcpy(respuesta, "Incorrecto");
-				}			
+				}
+				pthread_mutex_lock(&mutex);
+				AddElemento(&listaU,nombre,sock_conn);
+				char frase[100];
+				EscribirLista(&listaU,frase);
+				pthread_mutex_unlock(&mutex);
 			}
 		}
 		else if (codigo ==2)
@@ -381,14 +382,30 @@ void *AtenderCliente (void *socket)
 				sprintf (respuesta, "7/%s/NO",nombre);
 			}
 		}
-		if ((codigo !=0)&&(codigo != 5)&&(codigo != 6))
+		else if (codigo==7)
+		{
+			p = strtok( NULL, "/");
+			strcpy (nombredestino, p);
+			for (int j=0; j<listaU.num; j++)
+			{
+				if (strcmp(listaU.usuarios[j].nombre,nombredestino) == 0)
+				{
+					socketdestino=listaU.usuarios[j].socket;
+				}
+			}
+			char resp[20];
+			p = strtok( NULL, "/");
+			strcpy (resp, p);
+			sprintf (respuesta, "8/%s/%s",nombre,resp);
+		}
+		if ((codigo !=0)&&(codigo != 5)&&(codigo != 6)&&(codigo != 7))
 		{
 			printf ("%s",nombre);
 			printf ("Respuesta: %s\n", respuesta);
 			// Enviamos respuesta
 			write (sock_conn,respuesta, strlen(respuesta));
 		}
-		if ((codigo ==5)||(codigo == 6))
+		if ((codigo ==5)||(codigo == 6)||(codigo == 7))
 		{
 			printf ("%s",nombre);
 			printf ("Respuesta: %s\n", respuesta);
@@ -405,10 +422,12 @@ void *AtenderCliente (void *socket)
 			sprintf (notificacion, "5/%s", frase);
 			pthread_mutex_unlock(&mutex);
 			int j;
-			for (j=0; j<i; j++)
+			
+			for (j=0; j<listaU.num; j++)
 			{
-				write (sockets[j],notificacion, strlen(notificacion));
+				write (listaU.usuarios[j].socket,notificacion, strlen(notificacion));
 			}
+			
 		}
 	}
 	// Se acabo el servicio para este cliente

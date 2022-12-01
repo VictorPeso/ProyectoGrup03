@@ -42,6 +42,10 @@ namespace DAYAN_
             this.label3 = new System.Windows.Forms.Label();
             this.InvitarPartida = new System.Windows.Forms.Button();
             this.Usuariolb = new System.Windows.Forms.Label();
+            this.texto = new System.Windows.Forms.TextBox();
+            this.Enviar = new System.Windows.Forms.Button();
+            this.Chat = new System.Windows.Forms.Label();
+            this.Partida = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.listaUsuarios)).BeginInit();
             this.SuspendLayout();
             // 
@@ -171,11 +175,53 @@ namespace DAYAN_
             this.Usuariolb.TabIndex = 13;
             this.Usuariolb.Text = "label4";
             // 
+            // texto
+            // 
+            this.texto.Location = new System.Drawing.Point(633, 282);
+            this.texto.Name = "texto";
+            this.texto.Size = new System.Drawing.Size(170, 20);
+            this.texto.TabIndex = 14;
+            // 
+            // Enviar
+            // 
+            this.Enviar.Location = new System.Drawing.Point(809, 282);
+            this.Enviar.Name = "Enviar";
+            this.Enviar.Size = new System.Drawing.Size(81, 20);
+            this.Enviar.TabIndex = 15;
+            this.Enviar.Text = "Enviar";
+            this.Enviar.UseVisualStyleBackColor = true;
+            this.Enviar.Click += new System.EventHandler(this.Enviar_Click);
+            // 
+            // Chat
+            // 
+            this.Chat.AutoSize = true;
+            this.Chat.Font = new System.Drawing.Font("Mongolian Baiti", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Chat.Location = new System.Drawing.Point(633, 254);
+            this.Chat.Name = "Chat";
+            this.Chat.Size = new System.Drawing.Size(37, 14);
+            this.Chat.TabIndex = 16;
+            this.Chat.Text = "Chat";
+            this.Chat.Click += new System.EventHandler(this.label4_Click);
+            // 
+            // Partida
+            // 
+            this.Partida.AutoSize = true;
+            this.Partida.Font = new System.Drawing.Font("Mongolian Baiti", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Partida.Location = new System.Drawing.Point(633, 35);
+            this.Partida.Name = "Partida";
+            this.Partida.Size = new System.Drawing.Size(128, 14);
+            this.Partida.TabIndex = 17;
+            this.Partida.Text = "No estas en partida";
+            // 
             // Consulta
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(656, 340);
+            this.ClientSize = new System.Drawing.Size(918, 371);
+            this.Controls.Add(this.Partida);
+            this.Controls.Add(this.Chat);
+            this.Controls.Add(this.Enviar);
+            this.Controls.Add(this.texto);
             this.Controls.Add(this.Usuariolb);
             this.Controls.Add(this.InvitarPartida);
             this.Controls.Add(this.label3);
@@ -213,5 +259,9 @@ namespace DAYAN_
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button InvitarPartida;
         private System.Windows.Forms.Label Usuariolb;
+        private System.Windows.Forms.TextBox texto;
+        private System.Windows.Forms.Button Enviar;
+        private System.Windows.Forms.Label Chat;
+        private System.Windows.Forms.Label Partida;
     }
 }

@@ -19,6 +19,7 @@ namespace DAYAN_
         Thread atender;
         string Usuario;
         string nombredestino;
+        string nom;
 
         public Consulta()
         {
@@ -82,6 +83,7 @@ namespace DAYAN_
                         break;
 
                     case 5:
+                        listaUsuarios.Rows.Clear();
                         listaUsuarios.ColumnCount = 1;
                         listaUsuarios.RowCount = mensaje.Length -1;
                         int i = 1;
@@ -93,25 +95,43 @@ namespace DAYAN_
                         }
                         break;
                     case 6:
+                        nom = mensaje[1];
                         DialogResult r = MessageBox.Show(mensaje[1] + " quiere que te unas a su partida", "Notificacion", MessageBoxButtons.YesNo);
                         //MessageBox.Show(Convert.ToString(r));
-
                         string respuesta = "6/" + mensaje[1] + "/" + Convert.ToString(r);
+                        if (Convert.ToString(r)=="Yes")
+                        {
+                            Partida.Invoke(new Action(() =>
+                            {
+                                Partida.Text = "En partida con " + nom;
+                            }));
+                        }
                         // Enviamos al servidor el nombre tecleado
                         byte[] msg = System.Text.Encoding.ASCII.GetBytes(respuesta);
                         server.Send(msg);
 
                         break;
                     case 7:
-                        string nom = mensaje[1];
+                        nom = mensaje[1];
                         if (mensaje[2] == "SI")
                         {
                             MessageBox.Show(nom + " acepta jugar contigo");
+                            Partida.Invoke(new Action(() =>
+                            {
+                                Partida.Text = "En partida con " + nom;
+                            }));
                         }
                         else
                         {
                             MessageBox.Show(nom + " no acepta jugar contigo");
                         }
+                        break;
+                    case 8:
+                        nom = mensaje[1];
+                        Chat.Invoke(new Action(() =>
+                        {
+                            Chat.Text = nom + ": " + mensaje[2];
+                        }));
                         break;
                 }
             }
@@ -185,6 +205,19 @@ namespace DAYAN_
         private void listaUsuarios_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             nombredestino = listaUsuarios.Rows[e.RowIndex].Cells[0].Value.ToString();
+        }
+
+        private void Enviar_Click(object sender, EventArgs e)
+        {
+            string mensaje = "7/" + nom + "/" + texto.Text;
+            // Enviamos al servidor el nombre tecleado
+            byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
+            server.Send(msg);
+        }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -1,0 +1,6 @@
+C:\Users\Víctor\Desktop\DAYANG\MisClases\bin\Debug\MisClases.dll
+C:\Users\Víctor\Desktop\DAYANG\MisClases\bin\Debug\MisClases.pdb
+C:\Users\Víctor\Desktop\DAYANG\MisClases\obj\Debug\MisClases.csprojAssemblyReference.cache
+C:\Users\Víctor\Desktop\DAYANG\MisClases\obj\Debug\MisClases.csproj.CoreCompileInputs.cache
+C:\Users\Víctor\Desktop\DAYANG\MisClases\obj\Debug\MisClases.dll
+C:\Users\Víctor\Desktop\DAYANG\MisClases\obj\Debug\MisClases.pdb

@@ -1,0 +1,15 @@
+C:\Users\Víctor\Desktop\DAYANG\DAYANG_v1\bin\Debug\DAYANG_v1.exe.config
+C:\Users\Víctor\Desktop\DAYANG\DAYANG_v1\bin\Debug\DAYANG_v1.exe
+C:\Users\Víctor\Desktop\DAYANG\DAYANG_v1\bin\Debug\DAYANG_v1.pdb
+C:\Users\Víctor\Desktop\DAYANG\DAYANG_v1\bin\Debug\MisClases.dll
+C:\Users\Víctor\Desktop\DAYANG\DAYANG_v1\bin\Debug\MisClases.pdb
+C:\Users\Víctor\Desktop\DAYANG\DAYANG_v1\obj\Debug\DAYANG_v1.csprojAssemblyReference.cache
+C:\Users\Víctor\Desktop\DAYANG\DAYANG_v1\obj\Debug\DAYANG_v1.Properties.Resources.resources
+C:\Users\Víctor\Desktop\DAYANG\DAYANG_v1\obj\Debug\DAYANG_v1.csproj.GenerateResource.cache
+C:\Users\Víctor\Desktop\DAYANG\DAYANG_v1\obj\Debug\DAYANG_v1.csproj.CoreCompileInputs.cache
+C:\Users\Víctor\Desktop\DAYANG\DAYANG_v1\obj\Debug\DAYANG_v1.csproj.CopyComplete
+C:\Users\Víctor\Desktop\DAYANG\DAYANG_v1\obj\Debug\DAYANG_v1.exe
+C:\Users\Víctor\Desktop\DAYANG\DAYANG_v1\obj\Debug\DAYANG_v1.pdb
+C:\Users\Víctor\Desktop\DAYANG\DAYANG_v1\obj\Debug\DAYANG_v1.Tablero.resources
+C:\Users\Víctor\Desktop\DAYANG\DAYANG_v1\obj\Debug\DAYANG_v1.IniciarSesion.resources
+C:\Users\Víctor\Desktop\DAYANG\DAYANG_v1\obj\Debug\DAYANG_v1.SeleccionCampeon.resources
